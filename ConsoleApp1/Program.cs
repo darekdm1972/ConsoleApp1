@@ -1,26 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 using Dapper;
 
-namespace sqltest
+namespace ConsoleApp1
 {
     class Program
     {
+        private static Task<object> count;
+
         static void Main(string[] args)
         {
+           
             try
             {
-                // string connectionString = "Data Source=localhost;Initial Catalog=AdventureWorksLT2019;Integrated Security=True";
-                string connectionString = "Data Source=localhost;Initial Catalog=AdventureWorksDW2017;Integrated Security=True"; 
-                using SqlConnection connection = new SqlConnection(connectionString);
+                // string connectionString = "Data Source=localhost;Initial Catalog=AdventureWorksDW2019;Integrated Security=True";
+                string connectionString = "Data Source=localhost;Initial Catalog=AdventureWorks;Integrated Security=True";
+                string querySql = "SELECT [EmployeeKey],[FirstName],[LastName],[Title],[BirthDate],[EmailAddress],[Phone],[Status] FROM [dbo].[DimEmployee]";
 
-                string querySql = "SELECT TOP (10) [EmployeeKey],[FirstName],[LastName],[Title],[BirthDate],[EmailAddress],[Phone],[Status] FROM [dbo].[DimEmployee]";
-                IEnumerable<User> users = connection.Query<User>(querySql);
-                foreach (var user in users)
+                using SqlConnection connection = new SqlConnection(connectionString);
                 {
-                    Console.WriteLine($"{user.EmployeeKey} {user.FirstName} {user.LastName} {user.Title} {user.EmailAddress} {user.BirthDate} {user.Phone} {user.Status}");
+                    IEnumerable<User> users = connection.Query<User>(querySql);
+                    foreach (var user in users)
+                    {
+                        Console.WriteLine($"{user.EmployeeKey} {user.FirstName} {user.LastName} {user.Title} {user.EmailAddress} {user.BirthDate} {user.Phone} {user.Status}");
+                    }
                 }
+
+                var c = CountEmployeeAsync("Current");
+                Console.WriteLine(c);
+
             }
             catch (SqlException e)
             {
@@ -29,19 +39,19 @@ namespace sqltest
             Console.WriteLine("\nDone. Press enter.");
             Console.ReadLine();
         }
+
+        private static async Task<string> CountEmployeeAsync(string v)
+        {
+            string connectionString = "Data Source=localhost;Initial Catalog=AdventureWorks;Integrated Security=True";
+            using SqlConnection connection = new SqlConnection(connectionString);
+            {
+                var sql = "select count(*) from [dbo].[DimEmployee] where [Status]=" + v;
+                return (string)await (count = (Task<object>)connection.Query(sql));
+            }
+        }
+
+       
+   
     }
 
-    internal class User
-    {
-        public int EmployeeKey { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Title { get; set; }
-        public DateTime BirthDate { get; set; }
-        public string EmailAddress { get; set; }
-        public string Phone { get; set; }
-        public string Status { get; set; }
-
-        public string FullName { get => $"{LastName} {FirstName}"; }
-    }
 }

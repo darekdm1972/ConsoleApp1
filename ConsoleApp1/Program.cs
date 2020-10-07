@@ -28,9 +28,7 @@ namespace ConsoleApp1
                     }
                 }
 
-                var c = CountEmployeeAsync("Current");
-                Console.WriteLine(c);
-
+               
             }
             catch (SqlException e)
             {
@@ -38,16 +36,6 @@ namespace ConsoleApp1
             }
             Console.WriteLine("\nDone. Press enter.");
             Console.ReadLine();
-        }
-
-        private static async Task<string> CountEmployeeAsync(string v)
-        {
-            string connectionString = "Data Source=localhost;Initial Catalog=AdventureWorks;Integrated Security=True";
-            using SqlConnection connection = new SqlConnection(connectionString);
-            {
-                var sql = "select count(*) from [dbo].[DimEmployee] where [Status]=" + v;
-                return (string)await (count = (Task<object>)connection.Query(sql));
-            }
         }
 
        

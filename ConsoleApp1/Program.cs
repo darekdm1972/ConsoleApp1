@@ -13,7 +13,7 @@ namespace ConsoleApp1
         {
             string ConnectionString = "Data Source=localhost;Initial Catalog=AdventureWorks;Integrated Security=True";
             string querySql1 = "SELECT [EmployeeKey],[FirstName],[LastName],[Title],[BirthDate],[EmailAddress],[Phone],[Status] FROM [dbo].[DimEmployee]";
-            string querySql2 = "SELECT [EmployeeKey],[FirstName],[LastName],[Title],[BirthDate],[EmailAddress],[Phone],[Status] FROM [dbo].[DimEmployee]";
+            string querySql2 = "SELECT [EmployeeKey],[FirstName],[LastName],[Title],[BirthDate],[EmailAddress],[Phone],[Status] FROM [dbo].[DimEmployee] where [Status]='Current'";
 
             try
             {
@@ -56,11 +56,8 @@ namespace ConsoleApp1
             {
                 using SqlConnection connection = new SqlConnection(ConnectionString);
                 {
-                    IEnumerable<User> users = connection.Query<User>(QuerySQL);
-                    foreach (var user in users)
-                    {
-                        Console.WriteLine($"{user.EmployeeKey} {user.FirstName} {user.LastName} {user.Title} {user.EmailAddress} {user.BirthDate} {user.Phone} {user.Status}");
-                    }
+                    var users = connection.QueryFirstOrDefault<User>(QuerySQL);
+                    Console.WriteLine($"{users.FullName}");                    
                 }
             }
         }

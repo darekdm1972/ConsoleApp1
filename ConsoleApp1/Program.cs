@@ -28,7 +28,7 @@ namespace ConsoleApp1
                 Console.WriteLine("\nDone. Press enter.");
                 Console.ReadLine();
 
-                DaneZSerwera_QueryFirstOrDefault dane3 = new DaneZSerwera_QueryFirstOrDefault(ConnectionString, querySql3);
+                DaneZSerwera_QueryFirstOrDefaultAsync dane3 = new DaneZSerwera_QueryFirstOrDefaultAsync(ConnectionString, querySql3);
                 Console.WriteLine(dane2);
             }
             catch (SqlException e)

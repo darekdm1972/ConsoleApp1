@@ -8,8 +8,6 @@ namespace ConsoleApp1
 {
     class Program
     {
-        private static Task<object> count;
-
         static void Main(string[] args)
         {
            
@@ -37,6 +35,7 @@ namespace ConsoleApp1
             Console.WriteLine("\nDone. Press enter.");
             Console.ReadLine();
         }
+
 
        
    

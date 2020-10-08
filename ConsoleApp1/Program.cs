@@ -18,7 +18,7 @@ namespace ConsoleApp1
 
             try
             {
-                DaneZSerwera dane = new DaneZSerwera(ConnectionString, querySql);
+                DaneZSerwera_Query dane = new DaneZSerwera_Query(ConnectionString, querySql);
                 Console.WriteLine(dane);
             }
             catch (SqlException e)
@@ -30,36 +30,26 @@ namespace ConsoleApp1
         }
 
 
-        public class DaneZSerwera
+        public class DaneZSerwera_Query
         {
             public string QuerySQL { get; set; }
             public string ConnectionString { get; set; }
 
-            public DaneZSerwera()
+            public DaneZSerwera_Query()
             {
             }
 
-            public DaneZSerwera(string ConnectionString ,string QuerySQL)
+            public DaneZSerwera_Query(string ConnectionString ,string QuerySQL)
             {
-                try
+                using SqlConnection connection = new SqlConnection(ConnectionString);
                 {
-                    using SqlConnection connection = new SqlConnection(ConnectionString);
+                    IEnumerable<User> users = connection.Query<User>(QuerySQL);
+                    foreach (var user in users)
                     {
-                        IEnumerable<User> users = connection.Query<User>(QuerySQL);
-                        foreach (var user in users)
-                        {
-                            Console.WriteLine($"{user.EmployeeKey} {user.FirstName} {user.LastName} {user.Title} {user.EmailAddress} {user.BirthDate} {user.Phone} {user.Status}");
-                        }
+                        Console.WriteLine($"{user.EmployeeKey} {user.FirstName} {user.LastName} {user.Title} {user.EmailAddress} {user.BirthDate} {user.Phone} {user.Status}");
                     }
                 }
-                catch (SqlException e)
-                {
-                    Console.WriteLine(e.ToString());
-                }
             }
-
         }
-
     }
-
 }

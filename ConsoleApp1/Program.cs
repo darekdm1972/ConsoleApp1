@@ -11,15 +11,20 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            //string ConnectionString = "Data Source=localhost;Initial Catalog=AdventureWorks;Integrated Security=True";
-            string querySql = "SELECT [EmployeeKey],[FirstName],[LastName],[Title],[BirthDate],[EmailAddress],[Phone],[Status] FROM [dbo].[DimEmployee]";
             string ConnectionString = "Data Source=localhost;Initial Catalog=AdventureWorks;Integrated Security=True";
-
+            string querySql1 = "SELECT [EmployeeKey],[FirstName],[LastName],[Title],[BirthDate],[EmailAddress],[Phone],[Status] FROM [dbo].[DimEmployee]";
+            string querySql2 = "SELECT [EmployeeKey],[FirstName],[LastName],[Title],[BirthDate],[EmailAddress],[Phone],[Status] FROM [dbo].[DimEmployee]";
 
             try
             {
-                DaneZSerwera_Query dane = new DaneZSerwera_Query(ConnectionString, querySql);
+                DaneZSerwera_Query dane = new DaneZSerwera_Query(ConnectionString, querySql1);
                 Console.WriteLine(dane);
+                
+                Console.WriteLine("\nDone. Press enter."); 
+                Console.ReadLine();
+                
+                DaneZSerwera_QueryFirstOrDefault dane2 = new DaneZSerwera_QueryFirstOrDefault(ConnectionString, querySql2);
+                Console.WriteLine(dane2);
             }
             catch (SqlException e)
             {
@@ -32,14 +37,22 @@ namespace ConsoleApp1
 
         public class DaneZSerwera_Query
         {
-            public string QuerySQL { get; set; }
-            public string ConnectionString { get; set; }
-
-            public DaneZSerwera_Query()
-            {
-            }
-
             public DaneZSerwera_Query(string ConnectionString ,string QuerySQL)
+            {
+                using SqlConnection connection = new SqlConnection(ConnectionString);
+                {
+                    IEnumerable<User> users = connection.Query<User>(QuerySQL);
+                    foreach (var user in users)
+                    {
+                        Console.WriteLine($"{user.EmployeeKey} {user.FirstName} {user.LastName} {user.Title} {user.EmailAddress} {user.BirthDate} {user.Phone} {user.Status}");
+                    }
+                }
+            }
+        }
+
+        public class DaneZSerwera_QueryFirstOrDefault
+        {
+            public DaneZSerwera_QueryFirstOrDefault(string ConnectionString, string QuerySQL)
             {
                 using SqlConnection connection = new SqlConnection(ConnectionString);
                 {

@@ -12,6 +12,7 @@ namespace ConsoleApp1
             string ConnectionString = "Data Source=localhost;Initial Catalog=AdventureWorks;Integrated Security=True";
             string querySql1 = "SELECT [EmployeeKey],[FirstName],[LastName],[Title],[BirthDate],[EmailAddress],[Phone],[Status] FROM [dbo].[DimEmployee]";
             string querySql2 = "SELECT [EmployeeKey],[FirstName],[LastName],[Title],[BirthDate],[EmailAddress],[Phone],[Status] FROM [dbo].[DimEmployee] where [Status]='Current'";
+            string querySql3 = "SELECT [EmployeeKey],[FirstName],[LastName],[Title],[BirthDate],[EmailAddress],[Phone],[Status] FROM [dbo].[DimEmployee] where [Status] is null";
 
             try
             {
@@ -22,6 +23,12 @@ namespace ConsoleApp1
                 Console.ReadLine();
                 
                 DaneZSerwera_QueryFirstOrDefault dane2 = new DaneZSerwera_QueryFirstOrDefault(ConnectionString, querySql2);
+                Console.WriteLine(dane2);
+
+                Console.WriteLine("\nDone. Press enter.");
+                Console.ReadLine();
+
+                DaneZSerwera_QueryFirstOrDefault dane3 = new DaneZSerwera_QueryFirstOrDefault(ConnectionString, querySql3);
                 Console.WriteLine(dane2);
             }
             catch (SqlException e)
@@ -59,5 +66,18 @@ namespace ConsoleApp1
                 }
             }
         }
+
+        public class DaneZSerwera_QueryFirstOrDefaultAsync
+        {
+            public DaneZSerwera_QueryFirstOrDefaultAsync(string ConnectionString, string QuerySQL)
+            {
+                using SqlConnection connection = new SqlConnection(ConnectionString);
+                {
+                    var users = connection.QueryFirstOrDefaultAsync<User>(QuerySQL);
+                    Console.WriteLine($"{users.Result}");
+                }
+            }
+        }
     }
 }
+

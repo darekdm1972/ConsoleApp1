@@ -18,14 +18,14 @@ namespace ConsoleApp1
 
             try
             {
-                DaneZSerwera d1 = new DaneZSerwera();
+                Employee emp = new Employee();
 
                 Console.WriteLine("q1----------------");
-                d1.Dapper_Query(ConnectionString, QuerySQL: querySql1);
+                emp.Dapper_Query(ConnectionString, QuerySQL: querySql1);
                 Console.WriteLine("q2----------------");
-                d1.Dapper_QueryFirstOrDefault(ConnectionString, QuerySQL: querySql2);
+                emp.Dapper_QueryFirstOrDefault(ConnectionString, QuerySQL: querySql2);
                 Console.WriteLine("q3----------------");
-                d1.QueryFirstOrDefaultAsync(ConnectionString, QuerySQL: querySql3);
+                emp.QueryFirstOrDefaultAsync(ConnectionString, QuerySQL: querySql3);
                 Console.WriteLine("end----------------");
 
 
@@ -45,7 +45,7 @@ namespace ConsoleApp1
             void QueryFirstOrDefaultAsync(string ConnectionString, string QuerySQL);
         }
 
-        public class DaneZSerwera:IReadFromSQLServer
+        public class Employee:IReadFromSQLServer
         {
             public void Dapper_Query(string ConnectionString, string QuerySQL)
             {

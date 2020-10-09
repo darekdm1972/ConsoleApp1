@@ -16,8 +16,6 @@ namespace ConsoleApp1
 
             try
             {
-                //Employee emp = new Employee();
-
                 IEmployeeService employeeService = new DBEmployeeService(ConnectionString);
 
                 Console.WriteLine("q1----------------");

@@ -6,7 +6,7 @@ using Dapper;
 
 namespace ConsoleApp1
 {
-    class Program
+    partial class Program
     {
         static async Task Main(string[] args)
         {
@@ -44,14 +44,7 @@ namespace ConsoleApp1
             Console.ReadLine();
         }
 
-        interface IReadFromSQLServer
-        {
-            IEnumerable<User> Dapper_Query(string ConnectionString, string QuerySQL);
-            User Dapper_QueryFirstOrDefault(string ConnectionString, string QuerySQL);
-            Task<User> QueryFirstOrDefaultAsync(string ConnectionString, string QuerySQL);
-        }
-
-        public class Employee:IReadFromSQLServer
+        public class Employee : IEmployeeService
         {
             public IEnumerable<User> Dapper_Query(string ConnectionString, string QuerySQL)
             {

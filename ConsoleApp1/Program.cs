@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Reflection.Metadata;
+using System.Threading.Tasks;
 using Dapper;
 
 namespace ConsoleApp1
@@ -16,19 +18,19 @@ namespace ConsoleApp1
 
             try
             {
-                DaneZSerwera_Query dane = new DaneZSerwera_Query(ConnectionString, querySql1);
+                var dane = new DaneZSerwera_Query(ConnectionString, querySql1);
                 Console.WriteLine(dane);
-                
-                Console.WriteLine("\nDone. Press enter."); 
+
+                Console.WriteLine("\nDone. Press enter.");
                 Console.ReadLine();
-                
-                DaneZSerwera_QueryFirstOrDefault dane2 = new DaneZSerwera_QueryFirstOrDefault(ConnectionString, querySql2);
+
+                var dane2 = new DaneZSerwera_QueryFirstOrDefault(ConnectionString, querySql2);
                 Console.WriteLine(dane2);
 
                 Console.WriteLine("\nDone. Press enter.");
                 Console.ReadLine();
 
-                DaneZSerwera_QueryFirstOrDefaultAsync dane3 = new DaneZSerwera_QueryFirstOrDefaultAsync(ConnectionString, querySql3);
+                var dane3 = new DaneZSerwera_QueryFirstOrDefaultAsync(ConnectionString, querySql3);
                 Console.WriteLine(dane3);
             }
             catch (SqlException e)
@@ -73,9 +75,10 @@ namespace ConsoleApp1
             {
                 using SqlConnection connection = new SqlConnection(ConnectionString);
                 {
-                    var users =  connection.QueryFirstOrDefaultAsync(QuerySQL);
+                    var users = connection.QueryFirstOrDefaultAsync(QuerySQL);
                     Console.WriteLine($"{users.Result}");
                 }
+                
             }
         }
     }

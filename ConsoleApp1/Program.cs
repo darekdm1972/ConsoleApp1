@@ -35,9 +35,9 @@ namespace ConsoleApp1
 
 
             }
-            catch (SqlException e)
+            catch (Exception ex)
             {
-                Console.WriteLine(e.ToString());
+                Console.WriteLine(ex.Message);
             }
             Console.WriteLine("\nDone. Press enter.");
             Console.ReadLine();

@@ -29,7 +29,7 @@ namespace ConsoleApp1
                 Console.ReadLine();
 
                 DaneZSerwera_QueryFirstOrDefaultAsync dane3 = new DaneZSerwera_QueryFirstOrDefaultAsync(ConnectionString, querySql3);
-                Console.WriteLine(dane2);
+                Console.WriteLine(dane3);
             }
             catch (SqlException e)
             {
@@ -73,7 +73,7 @@ namespace ConsoleApp1
             {
                 using SqlConnection connection = new SqlConnection(ConnectionString);
                 {
-                    var users = connection.QueryFirstOrDefaultAsync<User>(QuerySQL);
+                    var users =  connection.QueryFirstOrDefaultAsync(QuerySQL);
                     Console.WriteLine($"{users.Result}");
                 }
             }

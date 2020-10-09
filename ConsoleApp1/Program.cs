@@ -18,20 +18,17 @@ namespace ConsoleApp1
 
             try
             {
-                var dane = new DaneZSerwera_Query(ConnectionString, querySql1);
-                Console.WriteLine(dane);
+                DaneZSerwera d1 = new DaneZSerwera();
 
-                Console.WriteLine("\nDone. Press enter.");
-                Console.ReadLine();
+                Console.WriteLine("q1----------------");
+                d1.Dapper_Query(ConnectionString, QuerySQL: querySql1);
+                Console.WriteLine("q2----------------");
+                d1.Dapper_QueryFirstOrDefault(ConnectionString, QuerySQL: querySql2);
+                Console.WriteLine("q3----------------");
+                d1.QueryFirstOrDefaultAsync(ConnectionString, QuerySQL: querySql3);
+                Console.WriteLine("end----------------");
 
-                var dane2 = new DaneZSerwera_QueryFirstOrDefault(ConnectionString, querySql2);
-                Console.WriteLine(dane2);
 
-                Console.WriteLine("\nDone. Press enter.");
-                Console.ReadLine();
-
-                var dane3 = new DaneZSerwera_QueryFirstOrDefaultAsync(ConnectionString, querySql3);
-                Console.WriteLine(dane3);
             }
             catch (SqlException e)
             {
@@ -41,46 +38,50 @@ namespace ConsoleApp1
             Console.ReadLine();
         }
 
-
-        public class DaneZSerwera_Query
+        interface IReadFromSQLServer
         {
-            public DaneZSerwera_Query(string ConnectionString ,string QuerySQL)
+            void Dapper_Query(string ConnectionString, string QuerySQL);
+            void Dapper_QueryFirstOrDefault(string ConnectionString, string QuerySQL);
+            void QueryFirstOrDefaultAsync(string ConnectionString, string QuerySQL);
+        }
+
+        public class DaneZSerwera:IReadFromSQLServer
+        {
+            public void Dapper_Query(string ConnectionString, string QuerySQL)
             {
                 using SqlConnection connection = new SqlConnection(ConnectionString);
                 {
-                    IEnumerable<User> users = connection.Query<User>(QuerySQL);
+                    IEnumerable<User> users = connection.Query<User>(QuerySQL).AsList();
                     foreach (var user in users)
                     {
                         Console.WriteLine($"{user.EmployeeKey} {user.FirstName} {user.LastName} {user.Title} {user.EmailAddress} {user.BirthDate} {user.Phone} {user.Status}");
                     }
+
                 }
             }
-        }
 
-        public class DaneZSerwera_QueryFirstOrDefault
-        {
-            public DaneZSerwera_QueryFirstOrDefault(string ConnectionString, string QuerySQL)
+            public void Dapper_QueryFirstOrDefault(string ConnectionString, string QuerySQL)
             {
                 using SqlConnection connection = new SqlConnection(ConnectionString);
                 {
                     var users = connection.QueryFirstOrDefault<User>(QuerySQL);
-                    Console.WriteLine($"{users.FullName}");                    
+                    Console.WriteLine($"{users.FullName}");
                 }
             }
-        }
 
-        public class DaneZSerwera_QueryFirstOrDefaultAsync
-        {
-            public DaneZSerwera_QueryFirstOrDefaultAsync(string ConnectionString, string QuerySQL)
+            public async void QueryFirstOrDefaultAsync(string ConnectionString, string QuerySQL)
             {
                 using SqlConnection connection = new SqlConnection(ConnectionString);
                 {
-                    var users = connection.QueryFirstOrDefaultAsync(QuerySQL);
+                    var users = await connection.QueryFirstOrDefaultAsync(QuerySQL);
                     Console.WriteLine($"{users.Result}");
                 }
-                
             }
+
         }
+
+       
+
     }
 }
 

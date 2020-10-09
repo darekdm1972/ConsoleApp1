@@ -15,6 +15,11 @@ namespace ConsoleApp1
         public string Status { get; set; }
 
         public string FullName { get => $"{LastName} {FirstName}"; }
+
+        public override string ToString()
+        {
+            return $"{EmployeeKey} {FirstName} {LastName} {Title} {EmailAddress} {BirthDate} {Phone} {Status}";
+        }
     }
 
 }

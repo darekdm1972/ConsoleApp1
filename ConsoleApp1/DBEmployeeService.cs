@@ -16,29 +16,20 @@ namespace ConsoleApp1
                 _connectionString = connectionString;
             }
 
-            public IEnumerable<User> GetDapperQuery(string QuerySQL)
+            public async Task<IEnumerable<User>> GetDapperQuery(string querySQL)
             {
                 using SqlConnection connection = new SqlConnection(_connectionString);
                 {
-                    IEnumerable<User> users = connection.Query<User>(QuerySQL);
+                    IEnumerable<User> users = await connection.QueryAsync<User>(querySQL);
                     return users;
                 }
             }
 
-            public User GetDapperQueryFirstOrDefault(string QuerySQL)
+            public async Task<User> GetDapperQueryFirstOrDefault(string querySQL)
             {
                 using SqlConnection connection = new SqlConnection(_connectionString);
                 {
-                    User users = connection.QueryFirstOrDefault<User>(QuerySQL);
-                    return users;
-                }
-            }
-
-            public async Task<User> GetDapperQueryFirstOrDefaultAsync(string QuerySQL)
-            {
-                using SqlConnection connection = new SqlConnection(_connectionString);
-                {
-                    User user = await connection.QueryFirstOrDefaultAsync<User>(QuerySQL);
+                    User user = await connection.QueryFirstOrDefaultAsync<User>(querySQL);
                     return user;
                 }
             }

@@ -20,18 +20,18 @@ namespace ConsoleApp1
                 Employee emp = new Employee();
 
                 Console.WriteLine("q1----------------");
-                IEnumerable<User> u1 = emp.Dapper_Query(ConnectionString, QuerySQL: querySql1);
+                IEnumerable<User> u1 = emp.GetDapperQuery(ConnectionString, QuerySQL: querySql1);
                 foreach (User user in u1)
                 {
                     Console.WriteLine(user.ToString());
                 }
 
                 Console.WriteLine("q2----------------");
-                User u2 = emp.Dapper_QueryFirstOrDefault(ConnectionString, QuerySQL: querySql2);
+                User u2 = emp.GetDapperQueryFirstOrDefault(ConnectionString, QuerySQL: querySql2);
                 Console.WriteLine(u2.ToString());
 
                 Console.WriteLine("q3----------------");
-                User u3 = await emp.QueryFirstOrDefaultAsync(ConnectionString, QuerySQL: querySql3);
+                User u3 = await emp.GetDapperQueryFirstOrDefaultAsync(ConnectionString, QuerySQL: querySql3);
                 Console.WriteLine(u3.ToString());
 
 
@@ -43,10 +43,10 @@ namespace ConsoleApp1
             Console.WriteLine("\nDone. Press enter.");
             Console.ReadLine();
         }
-
+        
         public class Employee : IEmployeeService
         {
-            public IEnumerable<User> Dapper_Query(string ConnectionString, string QuerySQL)
+            public IEnumerable<User> GetDapperQuery(string ConnectionString, string QuerySQL)
             {
                 using SqlConnection connection = new SqlConnection(ConnectionString);
                 {
@@ -55,7 +55,7 @@ namespace ConsoleApp1
                 }
             }
 
-            public User Dapper_QueryFirstOrDefault(string ConnectionString, string QuerySQL)
+            public User GetDapperQueryFirstOrDefault(string ConnectionString, string QuerySQL)
             {
                 using SqlConnection connection = new SqlConnection(ConnectionString);
                 {
@@ -64,7 +64,7 @@ namespace ConsoleApp1
                 }
             }
 
-            public async Task<User> QueryFirstOrDefaultAsync(string ConnectionString, string QuerySQL)
+            public async Task<User> GetDapperQueryFirstOrDefaultAsync(string ConnectionString, string QuerySQL)
             {
                 using SqlConnection connection = new SqlConnection(ConnectionString);
                 {

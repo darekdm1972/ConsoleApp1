@@ -7,9 +7,9 @@ namespace ConsoleApp1
     {
         interface IEmployeeService
         {
-            IEnumerable<User> Dapper_Query(string ConnectionString, string QuerySQL);
-            User Dapper_QueryFirstOrDefault(string ConnectionString, string QuerySQL);
-            Task<User> QueryFirstOrDefaultAsync(string ConnectionString, string QuerySQL);
+            IEnumerable<User> GetDapperQuery(string ConnectionString, string QuerySQL);
+            User GetDapperQueryFirstOrDefault(string ConnectionString, string QuerySQL);
+            Task<User> GetDapperQueryFirstOrDefaultAsync(string ConnectionString, string QuerySQL);
         }
 
        

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
-using Dapper;
 
 namespace ConsoleApp1
 {
@@ -17,21 +16,23 @@ namespace ConsoleApp1
 
             try
             {
-                Employee emp = new Employee();
+                //Employee emp = new Employee();
+
+                IEmployeeService employeeService = new DBEmployeeService(ConnectionString);
 
                 Console.WriteLine("q1----------------");
-                IEnumerable<User> u1 = emp.GetDapperQuery(ConnectionString, QuerySQL: querySql1);
+                IEnumerable<User> u1 = employeeService.GetDapperQuery(querySql1);
                 foreach (User user in u1)
                 {
                     Console.WriteLine(user.ToString());
                 }
 
                 Console.WriteLine("q2----------------");
-                User u2 = emp.GetDapperQueryFirstOrDefault(ConnectionString, QuerySQL: querySql2);
+                User u2 = employeeService.GetDapperQueryFirstOrDefault(querySql2);
                 Console.WriteLine(u2.ToString());
 
                 Console.WriteLine("q3----------------");
-                User u3 = await emp.GetDapperQueryFirstOrDefaultAsync(ConnectionString, QuerySQL: querySql3);
+                User u3 = await employeeService.GetDapperQueryFirstOrDefaultAsync(querySql3);
                 Console.WriteLine(u3.ToString());
 
 
@@ -43,37 +44,8 @@ namespace ConsoleApp1
             Console.WriteLine("\nDone. Press enter.");
             Console.ReadLine();
         }
-        
-        public class Employee : IEmployeeService
-        {
-            public IEnumerable<User> GetDapperQuery(string ConnectionString, string QuerySQL)
-            {
-                using SqlConnection connection = new SqlConnection(ConnectionString);
-                {
-                    IEnumerable<User> users = connection.Query<User>(QuerySQL);
-                    return users;
-                }
-            }
 
-            public User GetDapperQueryFirstOrDefault(string ConnectionString, string QuerySQL)
-            {
-                using SqlConnection connection = new SqlConnection(ConnectionString);
-                {
-                    User users = connection.QueryFirstOrDefault<User>(QuerySQL);
-                    return users;
-                }
-            }
 
-            public async Task<User> GetDapperQueryFirstOrDefaultAsync(string ConnectionString, string QuerySQL)
-            {
-                using SqlConnection connection = new SqlConnection(ConnectionString);
-                {
-                    User user = await connection.QueryFirstOrDefaultAsync<User>(QuerySQL);
-                    return user;
-                }
-            }
-
-        }
 
        
 
